@@ -134,10 +134,10 @@ const Navbar: React.FC = (): React.ReactElement => {
                 <NavMenuCol xs={14} sm={14} md={0} style={{ height: '100%' }}>
                     <Menu mode="horizontal" triggerSubMenuAction="click">
                         <SubMenu key="SubMenu" icon={<MenuOutlined />} title="Menu">
-                            <Menu.ItemGroup title="Bundle">
+                            <Menu.ItemGroup title="Derphi">
                                 <Menu.Item key="bdl">
                                     <Link href="https://exchange.pancakeswap.finance/#/swap?outputCurrency=0x7ff78e1cab9a2710eb6486ecbf3d94d125039364">
-                                      Buy BDL
+                                      Buy Derphi tokens
                                     </Link>
                                 </Menu.Item>
                             </Menu.ItemGroup>
