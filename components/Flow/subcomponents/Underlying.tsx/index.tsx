@@ -121,10 +121,4 @@ interface Props {
 
 // export default Underlying;
 
-const Underlying: React.FC<Props> = (props: Props): React.ReactElement => {
-  return (
-    <div>
-        jjs
-    </div>
-  )
-}
+
