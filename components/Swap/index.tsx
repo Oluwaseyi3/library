@@ -24,11 +24,11 @@
 // import Filled from '../Button/Filled';
 
 // interface Props {
-//     fund: Fund | undefined;
-//     assets: Asset[];
-//     account: string | undefined | null;
+//     fund?: Fund | undefined;
+//     assets?: Asset[];
+//     account?: string | undefined | null;
 //     disabled?: boolean;
-//     nav: BigNumber;
+//     nav?: BigNumber;
 // }
 
 // const TextBold = styled.div`

@@ -1,27 +1,31 @@
-// import { BigNumber } from '@ethersproject/bignumber';
-// import { TransactionReceipt, TransactionResponse } from '@ethersproject/providers';
-// import { formatUnits, parseEther } from '@ethersproject/units';
-// import { InputNumber } from 'antd';
-// import React from 'react';
-// import styled from 'styled-components';
+import { BigNumber } from '@ethersproject/bignumber';
+import { TransactionReceipt, TransactionResponse } from '@ethersproject/providers';
+import { formatUnits, parseEther } from '@ethersproject/units';
+import { InputNumber } from 'antd';
+import React from 'react';
+import styled from 'styled-components';
 // import useERC20Contract from '../../../../hooks/useERC20Contract';
-// import { Asset } from '../../../../lib/asset';
-// import { Fund } from '../../../../lib/fund';
-// import { parseBalance } from '../../../../util';
-// import Outline from '../../../Button/Outline';
-// import { Col, Row } from '../../../Layout';
-// import { approveMessage, errorMessage, txMessage } from '../../../Messages';
+import { Asset } from '../../../../lib/asset';
+import { Fund } from '../../../../lib/fund';
+import { parseBalance } from '../../../../util';
+import Outline from '../../../Button/Outline';
+import { Col, Row } from '../../../Layout';
+import { approveMessage, txMessage } from '../../../Messages';
 
-// interface Props {
-//     asset: Asset;
-//     isMinting?: boolean;
-//     value: BigNumber;
-//     setValue: any;
-//     fund: Fund | undefined;
-//     approved?: boolean;
-//     disabled?: boolean;
-//     balance?: BigNumber | undefined;
-// }
+import { prepareWriteContract, waitForTransaction, writeContract } from '@wagmi/core';
+import { useAccount } from 'wagmi'
+import { useContractRead } from 'wagmi'
+
+interface Props {
+    asset?: Asset;
+    isMinting?: boolean;
+    value?: BigNumber;
+    setValue?: any;
+    fund?: Fund | undefined;
+    approved?: boolean;
+    disabled?: boolean;
+    balance?: BigNumber | undefined;
+}
 
 // const InputContainer = styled.div`
 //     position: relative;
@@ -116,3 +120,11 @@
 // };
 
 // export default Underlying;
+
+const Underlying: React.FC<Props> = (props: Props): React.ReactElement => {
+  return (
+    <div>
+        jjs
+    </div>
+  )
+}

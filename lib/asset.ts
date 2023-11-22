@@ -41,11 +41,11 @@ export const SWAP_PATHS: { [key: string]: string[] } = {
     USDT: [PEG],
     USDC: [PEG],
     DAI: [PEG],
-    bDEFI: [PEG],
-    bSTBL: [PEG],
-    bCHAIN: [PEG],
+    dDEFI: [PEG],
+    dSTBL: [PEG],
+    dCHAIN: [PEG],
     BDL: [WBNB, PEG],
-    BUSD: [],
+    MATIC: [],
 };
 
 export interface Asset {
