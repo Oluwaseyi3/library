@@ -59,7 +59,7 @@ const MINT = 'MINT';
 const BURN = 'BURN';
 
 const Landing: React.FC = (): React.ReactElement => {
-    const { library, account } = useWeb3React();
+    // const { library, account } = useWeb3React();
     const router = useRouter();
     const [fund, setFund] = useState<Fund>();
     const [assets, setAssets] = useState<Asset[]>([]);
@@ -72,16 +72,16 @@ const Landing: React.FC = (): React.ReactElement => {
         };
     };
 
-    useEffect(() => {
-        if (router.isReady) {
-            setFund(getFundByName(router.query.id as string));
-        }
-    }, [router]);
+    // useEffect(() => {
+    //     if (router.isReady) {
+    //         setFund(getFundByName(router.query.id as string));
+    //     }
+    // }, [router]);
 
-    useEffect(() => {
-        getAssets(fund, library, setAssets);
-        getAsset(fund?.address, library, setFundAsset, true);
-    }, [fund, library]);
+    // useEffect(() => {
+    //     getAssets(fund, library, setAssets);
+    //     getAsset(fund?.address, library, setFundAsset, true);
+    // }, [fund, library]);
 
     useEffect(() => {
         if (fundAsset) {
