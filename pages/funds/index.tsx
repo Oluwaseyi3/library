@@ -172,7 +172,7 @@ const Landing: React.FC = (): React.ReactElement => {
        const month = today.getMonth() + 1;
 
      const data = [
-        { name: `${day}/${month}`, value: `$${lpPrice}` },
+        { name: `${day}/${month}`, value: lpPrice},
 
       ];
 
