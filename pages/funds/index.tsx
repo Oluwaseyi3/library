@@ -172,7 +172,7 @@ const Landing: React.FC = (): React.ReactElement => {
        const month = today.getMonth() + 1;
 
      const data = [
-        { name: `${day}/${month}`, value: lpPrice },
+        { name: `${day}/${month}`, value: `$${lpPrice}` },
 
       ];
 
@@ -244,11 +244,11 @@ const Landing: React.FC = (): React.ReactElement => {
                                         alignItems: 'center',
                                         padding: '20px',
                                     }}>
-  <LineChart width={600} height={300} data={data}>
+  <LineChart width={300} height={300} data={data}>
       <XAxis dataKey="name" />
       <YAxis />
       <CartesianGrid strokeDasharray="3 3" />
-      <Line type="monotone" dataKey="value" stroke="#8884d8" />
+      <Line type="monotone" dataKey="price" stroke="#8884d8" />
       <Tooltip />
       <Legend />
     </LineChart>
