@@ -244,7 +244,7 @@ const Landing: React.FC = (): React.ReactElement => {
                                         alignItems: 'center',
                                         padding: '20px',
                                     }}>
-  <LineChart width={300} height={300} data={data}>
+  <LineChart width={500} height={300} data={data}>
       <XAxis dataKey="name" />
       <YAxis />
       <CartesianGrid strokeDasharray="3 3" />
