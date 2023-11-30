@@ -1,11 +1,13 @@
 import { Layout } from 'antd';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect , useRef} from 'react';
 import styled from 'styled-components';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { RowContainer, Row, Col } from '../../components/Layout';
 import { getAssets, getFundByName, Fund } from '../../lib/fund';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+
+import axios from 'axios';
 import Card from '../../components/Card';
 import { useWeb3React } from '@web3-react/core';
 import AssetCard from '../../components/AssetCard';
@@ -15,8 +17,26 @@ import { parseBalance } from '../../util';
 import { parseEther } from '@ethersproject/units';
 // import Swap from '../../components/Swap';
 // import Flow from '../../components/Flow';
+import FlowMint from "../../components/FlowMint"
 import FlowRedeem from "../../components/FlowRedeem"
-import Chart from '../../components/Chart';
+// import Chart from '../../components/Chart';
+import { ApolloClient, InMemoryCache,  } from '@apollo/client';
+import Moralis from 'moralis';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import QuickSwap from '@quickswap/sdk';
+// import { useQuery, gql,  } from '@apollo/client';
+// const CHECK_LP_PRICE_MUTATION = gql`
+//   query checkLpPrice($id: String!) {
+//     pair(id: $id) {
+//       reserve0
+//       reserve1
+//       price1
+//     }
+//   }
+// `;
+
+
+
 
 interface SelectorProps {
     selected: boolean;
@@ -58,7 +78,9 @@ const TRADE = 'TRADE';
 const MINT = 'MINT';
 const BURN = 'BURN';
 
+
 const Landing: React.FC = (): React.ReactElement => {
+
     // const { library, account } = useWeb3React();
     const router = useRouter();
     const [fund, setFund] = useState<Fund>();
@@ -71,6 +93,8 @@ const Landing: React.FC = (): React.ReactElement => {
             setSelected(target);
         };
     };
+   
+   
 
     // useEffect(() => {
     //     if (router.isReady) {
@@ -82,6 +106,8 @@ const Landing: React.FC = (): React.ReactElement => {
     //     getAssets(fund, library, setAssets);
     //     getAsset(fund?.address, library, setFundAsset, true);
     // }, [fund, library]);
+    
+
 
     useEffect(() => {
         if (fundAsset) {
@@ -103,6 +129,52 @@ const Landing: React.FC = (): React.ReactElement => {
             }
         })
         .map((asset, index) => <AssetCard asset={asset} nav={nav} index={index} />);
+
+        // const { loading, error, data } = useQuery(GET_LP_PRICE);
+
+        // console.log(data)
+
+        const [lpPrice, setLPPrice] = useState(0);
+        const [lpPriceNative, setLPPriceNative] = useState(0);
+        
+  const [lpPriceData, setLPPriceData] = useState(0);
+
+        
+        useEffect(() => {
+          const fetchLPPriceData = async () => {
+            const url = `https://api.dexscreener.com/latest/dex/pairs/polygon/0x9677EBFc82d1cd10220129579fd5436434CA5811`;
+      
+            try {
+              const response = await axios.get(url);
+            //   console.log(response)
+              const priceData = response.data.pairs[0].priceUsd;
+              const  second = response.data.pairs
+              setLPPriceData(second)
+                  const test = response.data.pairs[0].priceChange.h24
+                  setLPPriceData(test)
+                  console.log(test)
+              const priceNative = response.data.pairs[0].volume.h24;
+              console.log(priceData)
+              setLPPrice(priceData);
+              setLPPriceNative(priceNative)
+            } catch (error) {
+              console.error(error);
+            }
+          };
+      
+          fetchLPPriceData();
+        }, []);
+      
+       console.log(lpPrice)
+
+       const today = new Date();
+       const day = today.getDate();
+       const month = today.getMonth() + 1;
+
+     const data = [
+        { name: `${day}/${month}`, value: lpPrice },
+
+      ];
 
     return (
         <Layout.Content>
@@ -134,25 +206,16 @@ const Landing: React.FC = (): React.ReactElement => {
                     </Col>
                     <Col xs={12} md={3} style={{ justifyContent: 'flex-end' }} mobilePadding="15px 0px 0px 0px">
                         <Field>Price</Field>
-                        <Text>{`$${fundAsset ? parseBalance(fundAsset.price!, 18, 2, false) : '0.00'}`}</Text>
+                        <Text>${lpPrice}</Text>
                     </Col>
                     <Col xs={12} md={3} style={{ justifyContent: 'flex-end' }} mobilePadding="15px 0px 0px 0px">
                         <Field>24H</Field>
-                        <Text>N/A</Text>
+                        <Text>  ${lpPriceNative}</Text>
                     </Col>
                     <Col xs={12} md={4} style={{ justifyContent: 'flex-end' }} mobilePadding="15px 0px 0px 0px">
                         <Field>Market Cap</Field>
                         <Text>
-                            {`$${
-                                fundAsset
-                                    ? parseBalance(
-                                          fundAsset.price!.mul(fundAsset.cap!).div(parseEther('1')),
-                                          18,
-                                          2,
-                                          false
-                                      )
-                                    : '0.00'
-                            }`}
+                        0.00
                         </Text>
                     </Col>
                     <Col xs={12} md={3} style={{ justifyContent: 'flex-end' }} mobilePadding="15px 0px 0px 0px">
@@ -180,9 +243,16 @@ const Landing: React.FC = (): React.ReactElement => {
                                         justifyContent: 'center',
                                         alignItems: 'center',
                                         padding: '20px',
-                                    }}
-                                >
-                                    <Chart id={fund?.cgid} />
+                                    }}>
+  <LineChart width={600} height={300} data={data}>
+      <XAxis dataKey="name" />
+      <YAxis />
+      <CartesianGrid strokeDasharray="3 3" />
+      <Line type="monotone" dataKey="value" stroke="#8884d8" />
+      <Tooltip />
+      <Legend />
+    </LineChart>
+                     
                                 </Card>
                             </Col>
                         </Row>
@@ -205,10 +275,10 @@ const Landing: React.FC = (): React.ReactElement => {
                                 >
                                     {/* <Selector onClick={selectorOnClick(TRADE)} selected={selected == TRADE}>
                                         Swap
-                                    </Selector>
+                                    </Selector> */}
                                     <Selector onClick={selectorOnClick(MINT)} selected={selected == MINT}>
                                         Mint
-                                    </Selector> */}
+                                    </Selector>
                                     <Selector onClick={selectorOnClick(BURN)} selected={selected == BURN}>
                                         Redeem
                                     </Selector>
@@ -218,7 +288,15 @@ const Landing: React.FC = (): React.ReactElement => {
                                <FlowRedeem
                             
                            />
+
+                          
+                            )}
+                                {selected == MINT && (
+                               <FlowMint
                             
+                           />
+
+                          
                             )}
                         </Row>
                     </Col>
