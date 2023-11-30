@@ -22,7 +22,8 @@ import FlowRedeem from "../../components/FlowRedeem"
 // import Chart from '../../components/Chart';
 import { ApolloClient, InMemoryCache,  } from '@apollo/client';
 import Moralis from 'moralis';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+// import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import QuickSwap from '@quickswap/sdk';
 // import { useQuery, gql,  } from '@apollo/client';
 // const CHECK_LP_PRICE_MUTATION = gql`
@@ -171,10 +172,28 @@ const Landing: React.FC = (): React.ReactElement => {
        const day = today.getDate();
        const month = today.getMonth() + 1;
 
-     const data = [
-        { name: `${day}/${month}`, value: lpPrice},
+    //  const data = [
+    //     { name: `${day}/${month}`, value: lpPrice},
 
+    //   ];
+
+    const data = [
+        {
+          name: `${day}/${month}`,
+          uv: 0,
+       
+     
+        },
+        {
+            name: `${day}/${month}`,
+            uv: lpPrice,
+           
+       
+          },
+    
       ];
+
+
 
     return (
         <Layout.Content>
@@ -244,7 +263,7 @@ const Landing: React.FC = (): React.ReactElement => {
                                         alignItems: 'center',
                                         padding: '20px',
                                     }}>
-  <LineChart width={500} height={300} data={data}>
+  {/* <LineChart width={500} height={300} data={data}>
       <XAxis dataKey="name" />
       <YAxis />
       <CartesianGrid strokeDasharray="3 3" />
@@ -252,7 +271,26 @@ const Landing: React.FC = (): React.ReactElement => {
       <Tooltip />
       <Legend />
     </LineChart>
-                     
+                      */}
+             <ResponsiveContainer width="100%" height="100%">
+        <AreaChart
+          width={500}
+          height={400}
+          data={data}
+          margin={{
+            top: 10,
+            right: 30,
+            left: 0,
+            bottom: 0,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Area type="monotone" dataKey="uv" stroke="#8884d8" fill="#8884d8" />
+        </AreaChart>
+      </ResponsiveContainer>
                                 </Card>
                             </Col>
                         </Row>
