@@ -190,6 +190,14 @@ const Landing: React.FC = (): React.ReactElement => {
            
        
           },
+
+          {
+            name: `${day}/${month}`,
+            uv: lpPrice,
+           
+       
+          },
+          
     
       ];
 
