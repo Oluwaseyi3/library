@@ -248,7 +248,7 @@ const Landing: React.FC = (): React.ReactElement => {
       <XAxis dataKey="name" />
       <YAxis />
       <CartesianGrid strokeDasharray="3 3" />
-      <Line type="monotone" dataKey="price" stroke="#8884d8" />
+      <Line type="monotone" dataKey="value" stroke="#8884d8" />
       <Tooltip />
       <Legend />
     </LineChart>
