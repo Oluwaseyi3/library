@@ -10,6 +10,7 @@ import { MenuOutlined } from '@ant-design/icons';
 import OutlineButton from '../Button/Outline';
 
 
+
 const Nav = styled(Layout.Header)`
     width: 100vw;
     height: 66px;
@@ -94,7 +95,11 @@ const NavMenuCol = styled(Col)`
     }
 `;
 
-const Navbar: React.FC = (): React.ReactElement => {
+interface NavProps{
+    toggleDarkMode(): void;
+}
+
+const Navbar: React.FC<NavProps> = ({toggleDarkMode}): React.ReactElement => {
     const router = useRouter();
     console.log(router.pathname);
 
@@ -129,6 +134,9 @@ const Navbar: React.FC = (): React.ReactElement => {
                     <NavMenuItem>
                         <Account  />
                     </NavMenuItem>
+                    {/* <NavMenuItem>
+                    <button onClick={toggleDarkMode}>Toggle Dark Mode</button>
+                    </NavMenuItem> */}
                    
                 </MenuCol>
                 <NavMenuCol xs={14} sm={14} md={0} style={{ height: '100%' }}>

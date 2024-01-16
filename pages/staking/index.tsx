@@ -5,9 +5,14 @@ import { useBalance } from 'wagmi'
 import { useAccount } from 'wagmi'
 import VaultCard from '../../components/StakingCard/VaultCard';
 
-const RowContainer = styled.div`
-    width: 100vw;
+interface RowContainerProps {
+    darkMode?: boolean;
+}
 
+const RowContainer = styled.div<RowContainerProps>`
+    width: 100vw;
+    background: ${(props) => props.theme.white + ' 0% 0% no-repeat padding-box'};
+    color: ${(props) => props.theme.whiteText };
     display: flex;
     justify-content: center;
     align-items: center;
@@ -22,13 +27,15 @@ const RowContainer = styled.div`
     }
 `;
 
-const StakingRow = styled(Row)`
+const StakingRow = styled(Row)<RowContainerProps>`
     max-width: ${(props) => props.theme.maxWidth};
     width: 100%;
+    color: ${(props) => props.theme.whiteText };
 `;
 
-const StakingCol = styled(Col)`
+const StakingCol = styled(Col)<RowContainerProps>`
     display: flex;
+    color: ${(props) => props.theme.whiteText };
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -38,27 +45,29 @@ const StakingCol = styled(Col)`
     }
 `;
 
-const BoxImage = styled.img`
+const BoxImage = styled.img<RowContainerProps>`
     @media (max-width: 768px) {
         margin-right: -20% !important;
         display: none;
     }
 `;
 
-const RewardsContainer = styled.div`
+const RewardsContainer = styled.div<RowContainerProps>`
     display: flex;
     flex-direction: column;
     width: 100%;
     max-width: 450px;
+    color: ${(props) => props.theme.whiteText };
 
     h1 {
         font-size: 30px;
     }
 `;
 
-const RewardCard = styled.div`
+const RewardCard = styled.div<RowContainerProps>`
     height: 75px;
     width: 100%;
+    color: ${(props) => props.theme.whiteText };
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -68,6 +77,7 @@ const RewardCard = styled.div`
     border-radius: 15px;
     overflow: hidden;
     margin: 10px 0px;
+    color: ${(props) => props.theme.whiteText };
 
     p {
         margin: 0px 15px 0px 0px;
@@ -76,7 +86,7 @@ const RewardCard = styled.div`
     }
 `;
 
-const RewardRow = styled.div`
+const RewardRow = styled.div<RowContainerProps>`
     display: flex;
     align-items: center;
 
@@ -84,6 +94,7 @@ const RewardRow = styled.div`
         margin: 0px 0px 0px 25px;
         font-family: 'Visuelt';
     }
+    color: ${(props) => props.theme.whiteText };
 `;
 
 interface ClaimButtonProps {
@@ -127,7 +138,7 @@ const StakingContainer = styled.div`
     }
 `;
 
-const Landing = () => {
+const Landing = ({darkMode}: { darkMode: boolean}) => {
 
     const { address} = useAccount()
 
@@ -142,7 +153,7 @@ const Landing = () => {
   return (
     <div>
            <Layout.Content>
-            <RowContainer>
+            <RowContainer darkMode={darkMode}>
                 <StakingRow>
                     <StakingCol md={12}>
                         <BoxImage height="80%" width="80%" src="/assets/LAPTOP.png" />

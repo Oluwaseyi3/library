@@ -2,13 +2,13 @@ import { Layout } from 'antd';
 import React, { useState, useEffect , useRef} from 'react';
 import styled from 'styled-components';
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import { RowContainer, Row, Col } from '../../components/Layout';
+import {  Row, Col } from '../../components/Layout';
 import { getAssets, getFundByName, Fund } from '../../lib/fund';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 import axios from 'axios';
-import Card from '../../components/Card';
+// import Card from '../../components/Card';
 import { useWeb3React } from '@web3-react/core';
 import AssetCard from '../../components/AssetCard';
 import { BigNumber } from '@ethersproject/bignumber';
@@ -43,9 +43,40 @@ interface SelectorProps {
     selected: boolean;
 }
 
+const RowContainer = styled.div<RowContainerProps>`
+    width: 100vw;
+    background: ${(props) => props.theme.white + ' 0% 0% no-repeat padding-box'};
+    color: ${(props) => props.theme.whiteText };
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 100px;
+
+    p {
+        margin-top: 10px;
+    }
+
+    @media (max-width: 768px) {
+        padding: 30px;
+    }
+`;
 const Field = styled.span`
     color: ${(props) => props.theme.grey};
 `;
+
+interface RowContainerProps {
+    darkMode?: boolean;
+}
+
+const Card = styled.div<RowContainerProps>`
+    width: 100%;
+    border-radius: 15px;
+    background-color: ${(props) => props.theme.white};
+    box-shadow: ${(props) => props.theme.darkMode ? '0px 2px 4px #fff' : '0px 2px 4px #0000004d'};
+    margin: 10px 0px;
+    overflow: hidden;
+`;
+
 
 const Text = styled.div`
     font-size: 16px;
@@ -80,7 +111,7 @@ const MINT = 'MINT';
 const BURN = 'BURN';
 
 
-const Landing: React.FC = (): React.ReactElement => {
+const Landing = ({darkMode}: { darkMode: boolean}) => {
 
     // const { library, account } = useWeb3React();
     const router = useRouter();
@@ -205,7 +236,7 @@ const Landing: React.FC = (): React.ReactElement => {
 
     return (
         <Layout.Content>
-            <RowContainer style={{ flexDirection: 'column' }}>
+            <RowContainer style={{ flexDirection: 'column' ,  }} darkMode={darkMode}>
                 <Row style={{ paddingBottom: '15px' }}>
                     <Col xs={4} md={2} hideOnMobile={true}>
                         <Link href="/funds">
@@ -318,6 +349,7 @@ const Landing: React.FC = (): React.ReactElement => {
                                         justifyContent: 'space-evenly',
                                         alignItems: 'flex-end',
                                     }}
+                                    darkMode={darkMode}
                                 >
                                     {/* <Selector onClick={selectorOnClick(TRADE)} selected={selected == TRADE}>
                                         Swap

@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { ExternalProvider, JsonRpcFetchFunc, Web3Provider } from '@ethersproject/providers';
 import { Web3ReactProvider } from '@web3-react/core';
 import { AppProps } from 'next/app';
@@ -14,15 +15,8 @@ function getLibrary(provider: ExternalProvider | JsonRpcFetchFunc) {
     return new Web3Provider(provider);
 }
 
-const theme = {
-    maxWidth: '1500px',
-    primary: '#0000FF',
-    darkGrey: '#292929',
-    grey: '#AAAAAA',
-    spaceGrey: '#EFEFEF',
-    white: '#FFFFFF',
-    primaryDark: '#d15e43',
-};
+
+
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
     [polygon],
@@ -35,7 +29,34 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
     webSocketPublicClient,
   })
 
+//   const theme = {
+//     maxWidth: '1500px',
+//     primary: '#0000FF',
+//     darkGrey: darkMode ? '#FFFFFF' : '#292929',  // Adjust dark mode color
+//     grey: '#AAAAAA',
+//     spaceGrey: '#EFEFEF',
+//     white: darkMode ? '#000000' : '#FFFFFF',   // Adjust dark mode color
+//     primaryDark: '#d15e43',
+// };
+
 export default function NextWeb3App({ Component, pageProps }: AppProps) {
+    const [darkMode, setDarkMode] = useState(false);
+
+  const theme = {
+    maxWidth: '1500px',
+    primary: '#0000FF',
+    darkGrey: darkMode ? '#FFFFFF' : '#292929',  // Adjust dark mode color
+    grey: '#AAAAAA',
+    spaceGrey: '#EFEFEF',
+    white: darkMode ? '#000000' : '#FFFFFF',  
+    whiteText: darkMode ? '#FFFFFF' : '#000000', 
+    shadow: darkMode ? '#FFFFFF' : '#000000',
+    // Adjust dark mode color
+    primaryDark: '#d15e43',
+};
+        const toggleDarkMode = () => {
+        setDarkMode(!darkMode);
+    };
     return (
         <WagmiConfig config={config}>
             <style jsx global>{`
@@ -76,6 +97,8 @@ export default function NextWeb3App({ Component, pageProps }: AppProps) {
 
                 body {
                     margin: 0;
+                    background-color: ${darkMode ? theme.darkGrey : theme.white}; // Adjust dark mode background color
+                    color: ${darkMode ? theme.white : theme.darkGrey}; // Adjust dark mode text color
                 }
 
                 p {
@@ -87,11 +110,13 @@ export default function NextWeb3App({ Component, pageProps }: AppProps) {
                     font-family: 'Visuelt';
                     font-weight: bold;
                     line-height: 1;
+                    color: ${darkMode ? theme.white : theme.darkGrey};
                 }
 
                 h1 {
                     font-size: 45px;
                     margin-bottom: 0px;
+                    color: ${darkMode ? theme.white : theme.darkGrey};
                 }
 
                 h3,
@@ -117,8 +142,8 @@ export default function NextWeb3App({ Component, pageProps }: AppProps) {
                         <link rel="icon" href="/favicon.ico" />
                     </head>
 
-                    <Navbar />
-                    <Component {...pageProps} />
+                    <Navbar toggleDarkMode={toggleDarkMode}/>
+                    <Component {...pageProps} darkMode={darkMode} />
                     <Footer />
                 </Layout>
             </ThemeProvider>

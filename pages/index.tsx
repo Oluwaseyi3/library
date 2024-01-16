@@ -4,8 +4,10 @@ import Image from 'next/image'
 
 import { Layout, Row, Col,  } from 'antd';
 import styled from 'styled-components';
-import  { useState } from 'react';
+import  { useState, useEffect } from 'react';
 import OutlinedButton from '../components/Button/Outline';
+import axios from 'axios';
+import Grid from '@mui/material/Grid';
 import RewardCard from '../components/RewardCard';
 import { formatNumber, getNamedAddress } from '../util';
 // import useContract from '../hooks/useContract';
@@ -15,16 +17,22 @@ import { Contract } from '@ethersproject/contracts';
 import Link from 'next/link';
 import PairABI from '../contracts/Pair.json';
 import { formatUnits, parseEther } from '@ethersproject/units';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 // import { getAsset } from '../lib/asset';
 
 interface RowContainerProps {
-    dark?: boolean;
+    darkMode?: boolean;
 }
 
 const RowContainer = styled.div<RowContainerProps>`
   width: 100vw;
   background: ${(props) => props.theme.white + ' 0% 0% no-repeat padding-box'};
-
+  color: ${(props) => props.theme.whiteText };
   display: flex;
   justify-content: center;
   align-items: center;
@@ -62,7 +70,7 @@ const SecondaryBox = styled(Image)`
     }
 `;
 
-const Box = styled.img`
+const Boxs = styled.img`
     @media (max-width: 768px) {
         display: none;
     }
@@ -88,6 +96,16 @@ const BoxMain = styled.img`
         margin-right: -20% !important;
     }
 `;
+
+const bull = (
+    <Box
+      component="span"
+      sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
+    >
+      •
+    </Box>
+  );
+
 const CHAINID = 137
 // const getApy = async (
 //   pid: string,
@@ -199,7 +217,80 @@ const CHAINID = 137
 //   );
 // }
 
-export default function Home() {
+export default function Home({darkMode}: { darkMode: boolean}) {
+
+    const [btcPrice, setBtcPrice] = useState(null);
+     const [bnbPrice, setBnbPrice] = useState(null);
+     const [maticPrice, setMaticPrice] = useState(null);
+     const [solPrice, setSolPrice] = useState(null);
+
+    useEffect(() => {
+        const fetchBtcPrice = async () => {
+          try {
+            const response = await axios.get(
+              'https://api.dexscreener.com/latest/dex/pairs/ethereum/0x11b815efb8f581194ae79006d24e0d814b7697f6'
+            );
+            console.log(response)
+            const priceData = response.data.pairs[0].priceUsd
+            setBtcPrice(priceData)
+              } catch (error) {
+           
+            console.error('Error fetching BTC price:', error);
+          }
+        };
+
+        const fetchBnbPrice = async () => {
+          try {
+            const response = await axios.get(
+              'https://api.dexscreener.com/latest/dex/pairs/bsc/0x16b9a82891338f9ba80e2d6970fdda79d1eb0dae'
+            );
+            console.log(response)
+            const priceData = response.data.pairs[0].priceUsd
+            setBnbPrice(priceData)
+              } catch (error) {
+           
+            console.error('Error fetching BNB price:', error);
+          }
+        };
+
+        const fetchMaticPrice = async () => {
+          try {
+            const response = await axios.get(
+              'https://api.dexscreener.com/latest/dex/pairs/ethereum/0x290a6a7460b308ee3f19023d2d00de604bcf5b42'
+            );
+            console.log(response)
+            const priceData = response.data.pairs[0].priceUsd
+            setMaticPrice(priceData)
+              } catch (error) {
+           
+            console.error('Error fetching Matic price:', error);
+          }
+        };
+
+        const fetchSolPrice = async () => {
+          try {
+            const response = await axios.get(
+              'https://api.dexscreener.com/latest/dex/pairs/solana/7qbrf6ysyguluvs6y1q64bdvrfe4zcuuz1jrdovnujnm'
+            );
+            console.log(response)
+            const priceData = response.data.pairs[0].priceUsd
+            setSolPrice(priceData)
+              } catch (error) {
+           
+            console.error('Error fetching Sol price:', error);
+          }
+        };
+
+  
+    
+    
+        fetchBtcPrice();
+        fetchBnbPrice()
+        fetchMaticPrice()
+        fetchSolPrice()
+      }, []); // Empty dependency array ensures the effect runs once on mount
+    
+    console.log(darkMode)
   return (
     <>
       <Head>
@@ -210,7 +301,7 @@ export default function Home() {
       </Head>
       <main>
       <Layout.Content>
-            <RowContainer dark={true}>
+            <RowContainer darkMode={darkMode}>
                 <LandingRow>
                     <LandingCol xs={24} sm={24} md={12}>
                         <div>
@@ -230,16 +321,76 @@ export default function Home() {
                                 />
                                
                             </h1>
-                            <h3 style={{ maxWidth: '600px' }}>
+                            <p style={{ maxWidth: '600px'}}>
                             Derpfi is redefining passive asset management. We&apos;re a community-governed project offering full exposure to crypto risk-management and the DeFi ecosystem through passively managed, non-custodial funds and indices.
 
+                            </p>
+
+                            <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+                                
+                            <Grid item xs={6}>
+                            <Card sx={{ maxWidth: 275 ,backgroundColor: "#0000FF"}}>
+                            <CardContent>
+                            <Typography sx={{ fontSize: 16 }} color="#FFFFFF" gutterBottom>
+                           Derphi
+                            </Typography>
+                              <Typography sx={{ fontSize: 14 }} color="#FFFFFF" gutterBottom>
                             
-                            </h3>
-                            <div style={{ margin: '30px 0px' }}>
-                                <a href="#">
-                                    <OutlinedButton>Discover</OutlinedButton>
-                                </a>
-                            </div>
+                              the price is $0.04
+                              </Typography>
+                              
+                            </CardContent>
+                            
+                          </Card>
+                            </Grid>
+
+                            <Grid item xs={6}>
+                            <Card sx={{ maxWidth: 275 ,backgroundColor: "#4a148c"}}>
+                            <CardContent>
+                            <Typography sx={{ fontSize: 16 }} color="#FFFFFF" gutterBottom>
+                            SOL
+                            </Typography>
+                              <Typography sx={{ fontSize: 14 }} color="#FFFFFF" gutterBottom>
+                              the price is ${solPrice}
+                              </Typography>
+                              
+                            </CardContent>
+                            
+                          </Card>
+                            </Grid>
+
+                            <Grid item xs={6}>
+                            <Card sx={{ maxWidth: 275 ,backgroundColor: "#009688"}}>
+                            <CardContent>
+                            <Typography sx={{ fontSize: 16 }} color="#FFFFFF" gutterBottom>
+                            BNB
+                            </Typography>
+                              <Typography sx={{ fontSize: 14 }} color="#FFFFFF" gutterBottom>
+                              the price is ${bnbPrice}
+                              </Typography>
+                              
+                            </CardContent>
+                            
+                          </Card>
+                            </Grid>
+
+                            <Grid item xs={6}>
+                            <Card sx={{ maxWidth: 275 ,backgroundColor: "#ff1744"}}>
+                            <CardContent>
+                            <Typography sx={{ fontSize: 16 }} color="#FFFFFF" gutterBottom>
+                            Matic
+                            </Typography>
+                              <Typography sx={{ fontSize: 14 }} color="#FFFFFF" gutterBottom>
+                              the price is ${maticPrice}
+                              </Typography>
+                              
+                            </CardContent>
+                            
+                          </Card>
+                            </Grid>
+                           
+                          </Grid>
+                            
                         </div>
                     </LandingCol>
                     <LandingCol xs={24} sm={24} md={12}>
@@ -251,9 +402,9 @@ export default function Home() {
                 <LandingRow>
                     <LandingCol xs={24} sm={24} md={12}>
                         <div>
-                            <h1 style={{ position: 'relative', maxWidth: '600px' }}>
+                            <h2 style={{ position: 'relative', maxWidth: '600px',  }}>
                                 Earn rewards for active participation
-                            </h1>
+                            </h2>
                             <p style={{ maxWidth: '600px' }}>
                                 At Derpfi, we decided to distribute governance tokens in return for active community
                                 participation. With no private investment, presale or ICO, all tokens are being
@@ -340,7 +491,7 @@ export default function Home() {
                                     A dao, <br />
                                     that comes in{' '}
                                     <span style={{ color: 'white', position: 'relative' }}>
-                                        <Box
+                                        <Boxs
                                             src="/assets/boxes.svg"
                                             width="125px"
                                             style={{ position: 'absolute', right: '3px', bottom: '5px' }}
